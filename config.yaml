@@ -18,8 +18,8 @@ params:
             author: "Vasudha Jha"
 
         logo: 
-            display: false
-            src: "/assets/img/uwe-uwe-logo.png"
+            display: true
+            src: "/assets/img/tag1.gif"
 
         shortDesc: 
             display: true
