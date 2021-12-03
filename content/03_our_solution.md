@@ -6,4 +6,4 @@ draft: false
 
 ## Our solution
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sollicitudin lacinia varius. Maecenas quis velit id erat semper finibus non eget elit. Nam pharetra interdum velit, ut cursus ex pellentesque non.
+Explain our solution, how our project helps solve the problem and what is unique about it, including some technical detail.
