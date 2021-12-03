@@ -370,9 +370,16 @@ table td {
     margin-bottom: 48px;
 }
 
-#page-header #page-logo-wrapper {
+/* #page-header #page-logo-wrapper {
     background-color: #000000;
     border-radius: 50%;
+    height: 150px;
+    margin: 0 auto 24px auto;
+    width: 150px;
+} */
+
+#page-header #page-logo-wrapper {
+    background-color: #ffffff;
     height: 150px;
     margin: 0 auto 24px auto;
     width: 150px;
