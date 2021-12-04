@@ -20,9 +20,3 @@ We have exposed RESTful APIs so that these third-party applications can easily u
 <!-- <p align="center">
     Application Architecture
 </p> -->
-
-While our solution is conceptually VCS-agnostic, for the purposes of this project, we have created an immutable tagging system compatible with GitHub, since it is the most popular code hosting platform with easily accessible APIs.
-
-<p align = "center">
-    <img src="/assets/img/architecture.png" alt="tag" width="100%"/>
-</p>
