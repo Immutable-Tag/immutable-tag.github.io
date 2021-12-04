@@ -70,13 +70,15 @@ Original comic: <a href=https://xkcd.com/2347/>https://xkcd.com/2347/</a>
 Mutating a tag can cause issues
 </p>
 <h2 id=our-solution>Our solution</h2>
-<p>Our solution uses the tamper-evident and tamper-resistant nature of blockchain technology to guarantee tag immutability and provide assurance to users that their products and automation systems will continue functioning with the same level of reliability.</p>
+<p>Our solution uses the tamper-evident and tamper-resistant nature of blockchain to guarantee tag immutability and provide assurance to users that their products will continue functioning with the same level of reliability.</p>
 <p>Since most VCS support the concept of tags, they can make use of our tool-agnostic solution to support tag immutability in their products. Source-code repository hosting services such as GitHub, GitLab, Bitbucket, and SourceForge can also provide their users with tag immutability and since these host most of the world’s open-source projects, the benefit can be extended to millions of developers and end-users worldwide.</p>
+<p>We have exposed RESTful APIs so that these third-party applications can easily use our solution.</p>
 <p align=center>
 <img src=./assets/img/solution.png alt=tag width=100%>
 </p>
+<p>While our solution is conceptually VCS-agnostic, for the purposes of this project, we have created an immutable tagging system compatible with GitHub, since it is the most popular code hosting platform with easily accessible APIs.</p>
 <p align=center>
-our solution
+<img src=./assets/img/architecture.png alt=tag width=100%>
 </p>
 <h2 id=smart-contracts>Smart Contracts</h2>
 <p>Explain code for smart contracts</p>
