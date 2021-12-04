@@ -6,4 +6,12 @@ draft: false
 
 ## What are tags?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sollicitudin lacinia varius. Maecenas quis velit id erat semper finibus non eget elit. Nam pharetra interdum velit, ut cursus ex pellentesque non.
+Version control systems provide the functionality to tag specific points in a repository’s history as milestones which can be used for a marked version release (i.e. v1.0.1). A tag can be considered as a branch which should not change after being created and mapped to a commit.
+
+<p align = "center">
+    <img src="/assets/img/tags.png" alt="tag" width="75%"/>
+</p>
+
+<p align="center">
+    Tags point to commits
+</p>
