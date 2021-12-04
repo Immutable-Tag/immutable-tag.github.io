@@ -1,5 +1,5 @@
 ---
-weight: 11
+weight: 10
 title: "About the team"
 draft: false
 ---
