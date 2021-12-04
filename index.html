@@ -39,9 +39,36 @@
 </nav>
 <main id=page-content>
 <h2 id=what-are-tags>What are tags?</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sollicitudin lacinia varius. Maecenas quis velit id erat semper finibus non eget elit. Nam pharetra interdum velit, ut cursus ex pellentesque non.</p>
+<p>Version control systems provide the functionality to tag specific points in a repository’s history as milestones which can be used for a marked version release (i.e. v1.0.1). A tag can be considered as a branch which should not change after being created and mapped to a commit.</p>
+<p align=center>
+<img src=./assets/img/tags.png alt=tag width=75%>
+</p>
+<p align=center>
+Tags point to commits
+</p>
 <h2 id=why-make-tags-immutable>Why make tags immutable?</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sollicitudin lacinia varius. Maecenas quis velit id erat semper finibus non eget elit. Nam pharetra interdum velit, ut cursus ex pellentesque non.</p>
+<p align=center>
+<img src=https://imgs.xkcd.com/comics/dependency.png alt=tag width=75%>
+</p>
+<p align=center>
+Original comic: <a href=https://xkcd.com/2347/>https://xkcd.com/2347/</a>
+</p>
+<p>The above comic accurately depicts our modern digital infrastructure where dependencies are stacked upon each other like these blocks, each block supporting the weight of all the blocks above it.</p>
+<p>Tags allow software developers to determine which versions of code they can reliably use as dependencies in their projects. Many automation systems rely on tags to build and install dependencies.</p>
+<p>Therefore, mutating these tags by changing the commits that they point to can cause:</p>
+<ul>
+<li>build failures</li>
+<li>incompatibilites</li>
+<li>bugs</li>
+<li>security vulnerabilities</li>
+</ul>
+<p>in the project and other projects that depend on it.</p>
+<p align=center>
+<img src=./assets/img/commit_mapping.gif alt=tag width=75%>
+</p>
+<p align=center>
+Mutating a tag can cause issues
+</p>
 <h2 id=our-solution>Our solution</h2>
 <p>Explain our solution, how our project helps solve the problem and what is unique about it, including some technical detail.</p>
 <h2 id=smart-contracts>Smart Contracts</h2>
