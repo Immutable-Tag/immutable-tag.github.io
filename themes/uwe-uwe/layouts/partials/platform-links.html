@@ -8,7 +8,7 @@
                 <li>
                     <a href='{{ .target | default "#" }}' title="{{ .title }}">
                         {{ if or (eq $displayMode "as-icons") (eq $displayMode "as-icons-and-text") }}
-                            <img alt="{{ .name }} icon" src="{{ .iconSrc }}" width="36" height="36" />
+                            <img alt="{{ .name }} icon" src="{{ .iconSrc }}" width="50" height="50" />
                         {{ end }}
 
                         {{ if or (eq $displayMode "as-text") (eq $displayMode "as-icons-and-text") }}
