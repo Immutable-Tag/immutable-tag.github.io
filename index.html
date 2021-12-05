@@ -41,19 +41,19 @@
 </nav>
 <main id=page-content>
 <h2 id=what-are-tags>What are tags?</h2>
-<p>Version control systems provide the functionality to tag specific points in a repository’s history as milestones which can be used for a marked version release (i.e. v1.0.1). A tag can be considered as a branch which should not change after being created and mapped to a commit.</p>
+<p>Version control systems (VCS) provide the functionality to tag specific points in a repository’s history as milestones which can be used for a marked version release (i.e. v1.0.1). A tag can be considered as a branch which should not change after being created and mapped to a commit.</p>
 <p align=center>
 <img src=./assets/img/tags.png alt=tag width=75%>
 </p>
 <p align=center>
-Tags point to commits
+<i>Tags point to commits</i>
 </p>
 <h2 id=why-make-tags-immutable>Why make tags immutable?</h2>
 <p align=center>
 <img src=https://imgs.xkcd.com/comics/dependency.png alt=tag width=75%>
 </p>
 <p align=center>
-Original comic: <a href=https://xkcd.com/2347/>https://xkcd.com/2347/</a>
+<i>Original comic: <a href=https://xkcd.com/2347/>https://xkcd.com/2347/</a></i>
 </p>
 <p>The above comic accurately depicts our modern digital infrastructure where dependencies are stacked upon each other like these blocks, each block supporting the weight of all the blocks above it.</p>
 <p>Tags allow software developers to determine which versions of code they can reliably use as dependencies in their projects. Many automation systems rely on tags to build and install dependencies.</p>
@@ -69,26 +69,42 @@ Original comic: <a href=https://xkcd.com/2347/>https://xkcd.com/2347/</a>
 <img src=./assets/img/commit_mapping.gif alt=tag width=75%>
 </p>
 <p align=center>
-Mutating a tag can cause issues
+<i>Mutating a tag can cause issues</i>
 </p>
 <h2 id=our-solution>Our solution</h2>
 <p>Our solution uses the tamper-evident and tamper-resistant nature of blockchain to guarantee tag immutability and provide assurance to users that their products will continue functioning with the same level of reliability.</p>
+<div aria-label="notification - info" class="notification info">
+<img alt="info icon" src=./assets/img/icons/info-icon.png height=48 width=48>
+<div>
+If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fceab</code>, then it should not be possible to delete or modify it by pointing it to a different commit <code>abcdef</code>. This way, users who were depending on the changes that were made until commit <code>0fceab</code> will not be pointed to the potentially buggy and incompatible commit <code>abcdef</code>.
+</div>
+</div>
+<p>Our solution leverages blockchain and smart contracts to:</p>
+<ul>
+<li>Create tags immutably</li>
+<li>Retrieve created tags</li>
+</ul>
+<p>We have exposed RESTful APIs so that third-party applications can easily use our solution to provide tag immutability.</p>
 <p>Since most VCS support the concept of tags, they can make use of our tool-agnostic solution to support tag immutability in their products. Source-code repository hosting services such as GitHub, GitLab, Bitbucket, and SourceForge can also provide their users with tag immutability and since these host most of the world’s open-source projects, the benefit can be extended to millions of developers and end-users worldwide.</p>
-<p>We have exposed RESTful APIs so that these third-party applications can easily use our solution.</p>
 <p align=center>
 <img src=./assets/img/solution.png alt=tag width=100%>
+</p>
+<p align=center>
+<i>Our solution</i>
 </p>
 <h2 id=scope-of-this-project>Scope of this project</h2>
 <p>While our solution is conceptually VCS-agnostic, for the purposes of this project, we have created an immutable tagging system compatible with GitHub, since it is the most popular code hosting platform with easily accessible APIs.</p>
 <p align=center>
 <img src=./assets/img/architecture.png alt=tag width=100%>
 </p>
-<p>TODO: application features</p>
+<p align=center>
+<i>Application Architecture</i>
+</p>
 <p>Our application is made up of three fundamental components:</p>
 <ol>
-<li>Ganache Blockchain and Ethereum Smart Contracts</li>
+<li>Ethereum Smart Contracts written in Solidity</li>
 <li>A Node.js Middleware</li>
-<li>Front-end Web Application using ReactJS</li>
+<li>Front-end Web Application written using ReactJS</li>
 </ol>
 <p>In the following sections, we will go through each of these components in detail.</p>
 <h2 id=smart-contracts>Smart Contracts</h2>
@@ -116,6 +132,9 @@ here
 <p>Once you the application running, the following video shows how you can use the application to create tags immutably and retrieve them.</p>
 <p align=center>
 <video src=./assets/video/ImmutableTagDemo.mp4 alt=demo width=100% controls>
+</p>
+<p align=center>
+<i>Demo video</i>
 </p>
 <h2 id=future-work>Future Work</h2>
 <h2 id=about-the-team>About the team</h2>
