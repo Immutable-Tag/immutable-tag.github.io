@@ -10,7 +10,7 @@ draft: false
     <img src="https://imgs.xkcd.com/comics/dependency.png" alt="tag" width="75%"/>
 </p>
 <p align="center">
-    Original comic: <a href="https://xkcd.com/2347/">https://xkcd.com/2347/</a>
+    <i>Original comic: <a href="https://xkcd.com/2347/">https://xkcd.com/2347/</a></i>
 </p>
 
 The above comic accurately depicts our modern digital infrastructure where dependencies are stacked upon each other like these blocks, each block supporting the weight of all the blocks above it.
@@ -30,5 +30,5 @@ in the project and other projects that depend on it.
     <img src="/assets/img/commit_mapping.gif" alt="tag" width="75%"/>
 </p>
 <p align="center">
-    Mutating a tag can cause issues
+    <i>Mutating a tag can cause issues</i>
 </p>

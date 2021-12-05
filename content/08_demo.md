@@ -17,6 +17,6 @@ Once you the application running, the following video shows how you can use the 
 <p align = "center">
     <video src="/assets/video/ImmutableTagDemo.mp4" alt="demo" width="100%" controls/>
 </p>
-<!-- <p align="center">
-    Application Architecture
-</p> -->
+<p align="center">
+    <i>Demo video</i>
+</p>
