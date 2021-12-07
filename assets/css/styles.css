@@ -599,3 +599,33 @@ table td {
     margin-top: 0;
     margin-bottom: 6px;
 }
+
+.middle {
+    padding-top: 20px;
+    width: 45%;
+}
+
+.lmiddle {
+    padding-top: 20px;
+    width: 75%;
+}
+
+/* Use a media query to add a break point at 600px: */
+@media screen and (max-width: 600px) {
+    .middle {
+        width: 60%;
+    }
+    .lmiddle {
+        width: 80%;
+    }
+}
+
+/* Use a media query to add a break point at 400px: */
+@media screen and (max-width: 400px) {
+    .middle {
+        width: 80%;
+    }
+    .lmiddle {
+        width: 80%;
+    }
+}

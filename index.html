@@ -111,53 +111,69 @@ If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fcea
 <p>Explain code for smart contracts</p>
 <h2 id=nodejs-middleware>Node.js Middleware</h2>
 <h2 id=the-react-app>The React App</h2>
+<p>We have created a frontend using ReactJS to showcase how to:</p>
+<ol>
+<li>Create a tag immutably</li>
+<li>Retrieve created tag</li>
+</ol>
 <p align=center>
 <img src=./assets/img/Front_Page.png alt=tag width=100%>
 </p>
 <p align=center>
-Home Page
+<i>Home Page</i>
 </p>
-To achieve the basic functionality of Tag Immutability, we have created two features
+<h3 id=creating-a-tag>Creating a Tag</h3>
+<p>Upon navigating to the create tag page, we can see a form that requires the following fields:</p>
 <ol>
-<li>Create a Tag</li>
-<li>Retrieve a Tag</li>
+<li>The Repository URL for which we wish to create a tag</li>
+<li>The tag name</li>
+<li>The commit which we wish to map the tag to</li>
+</ol>
+<p>Optionally, the form also accepts a GitHub token which includes permissions for creating tags in the GitHub repository as well as the blockchain.</p>
+<p align=center>
+<img src=./assets/img/create_tag.gif alt="create tag" class=middle>
+</p>
+<p align=center>
+<i>Creating a Tag</i>
+</p>
+<p>A tag is not created in the following scenarios:</p>
+<ol>
+<li><strong>Tag already exists</strong> - To guarantee immutability, a tag once created cannot be modified. Therefore, trying to map a pre-exisiting tag to a different commit gives an error message <code>Tag already exists</code>.</li>
 </ol>
 <p align=center>
-<img src=./assets/img/Token_Create_Combine.png alt=tag width=100%>
+<img src=./assets/img/tag_already_exists.gif alt="Tag already exists" class=middle>
 </p>
 <p align=center>
-Tag Creation along with Github Token
+<i>Tag already exists</i>
 </p>
-For a Successful Tag creation,we have to input a Repository url, unique Tag id and existing commid id in the repository. There are two ways of creating a Tag.
-<ol>
-<li>With Github Token - Once we provide the required information along with github token, Tag gets created on Blockchain as well in corresponding github repository.</li>
-<li>Without Github Token - Tag gets created only on Blockchain.</li>
+<ol start=2>
+<li><strong>Commit does not exist</strong> - Trying to create a tag with an invalid commit, i.e. a commit which does not exist in the provided Repository URL gives an error message <code>Commit does not exist</code></li>
 </ol>
 <p align=center>
-<img src=./assets/img/Error_Create.png alt=tag width=100%>
+<img src=./assets/img/bad_commit.gif alt="Commit does not exist" class=middle>
 </p>
 <p align=center>
-Error scenarios during Tag Creation
+<i>Commit does not exist</i>
 </p>
-Tag is not created in the following scenarios
+<h3 id=retrieving-a-tag>Retrieving a tag</h3>
+<p>Once a tag is created in the blockchain, it can be retrieved by providing:</p>
 <ol>
-<li>Commit does not exist - This failure occurs when we input commit id which is not present in the corresponding input repository url.</li>
-<li>Tag already exists - One tag name can map to only one commit id. If we input the tag name which already exists in the blockchain, tag creation will be unsuccessful. Thus immutability is maintained.</li>
+<li>The Repository URL for which we created the tag</li>
+<li>The tag name</li>
 </ol>
 <p align=center>
-<img src=./assets/img/Retrieve_Combine.png alt=tag width=100%>
+<img src=./assets/img/get_tag.gif alt="Retrieving a tag" class=lmiddle>
 </p>
 <p align=center>
-Successful Tag Retrival
+<i>Retrieving a tag</i>
 </p>
-Tag information can be retrieved successfully by inputing repository url and the Tag id present in the repo, irrespective of the token. The retrival displays the repository url, tag id and the corresponding commit hash.
+<p>Tag retrieval will be unsuccessful if we pass a tag name that does not exist in the corresponding repository URL.</p>
 <p align=center>
-<img src=./assets/img/Error_Retrieve.png alt=tag width=100%>
+<img src=./assets/img/get_tag_fail.gif alt="Failed to retrieve tag" class=lmiddle>
 </p>
 <p align=center>
-Error scenarios during Tag Retrival
+<i>Failed to retrieve tag</i>
 </p>
-Tag retrival will be unsuccessful, when we input the tag name that does not exist in the corresponding repository url. Hence it throws "Tag not exist" error.
 <h2 id=demo>Demo</h2>
 <h3 id=running-the-application-locally>Running the application locally</h3>
 <p>Please refer to this
