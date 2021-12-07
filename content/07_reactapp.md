@@ -6,53 +6,73 @@ draft: false
 
 ## The React App
 
+We have created a frontend using ReactJS to showcase how to:
+1. Create a tag immutably
+1. Retrieve created tag
+
 <p align = "center">
     <img src="/assets/img/Front_Page.png" alt="tag" width="100%"/>
 </p>
 <p align="center">
-    Home Page
+    <i>Home Page</i>
 </p>
-To achieve the basic functionality of  Tag Immutability, we have created two features
 
-1. Create a Tag
-1. Retrieve a Tag 
+### Creating a Tag
 
+Upon navigating to the create tag page, we can see a form that requires the following fields:
 
-<p align = "center">
-    <img src="/assets/img/Token_Create_Combine.png" alt="tag" width="100%"/>
-</p>
-<p align="center">
-    Tag Creation along with Github Token
-</p>
-For a Successful Tag creation,we have to input a Repository url, unique Tag id and existing commid id in the repository. There are two ways of creating a Tag.
+1. The Repository URL for which we wish to create a tag
+1. The tag name
+1. The commit which we wish to map the tag to
 
-1. With Github Token - Once we provide the required information along with github token, Tag gets created on Blockchain as well in corresponding github repository. 
-1. Without Github Token - Tag gets created only on Blockchain.
+Optionally, the form also accepts a GitHub token which includes permissions for creating tags in the GitHub repository as well as the blockchain.
 
 <p align = "center">
-    <img src="/assets/img/Error_Create.png" alt="tag" width="100%"/>
+    <img src="/assets/img/create_tag.gif" alt="create tag" class="middle"/>
 </p>
 <p align="center">
-    Error scenarios during Tag Creation
+    <i>Creating a Tag</i>
 </p>
-Tag is not created in the following scenarios
 
-1. Commit does not exist - This failure occurs when we input commit id which is not present in the corresponding input repository url.
-1. Tag already exists - One tag name can map to only one commit id. If we input the tag name which already exists in the blockchain, tag creation will be unsuccessful. Thus immutability is maintained.
+A tag is not created in the following scenarios:
+
+1. **Tag already exists** - To guarantee immutability, a tag once created cannot be modified. Therefore, trying to map a pre-exisiting tag to a different commit gives an error message `Tag already exists`.
+<p align = "center">
+    <img src="/assets/img/tag_already_exists.gif" alt="Tag already exists" class="middle"/>
+</p>
+<p align="center">
+    <i>Tag already exists</i>
+</p>
+
+2. **Commit does not exist** - Trying to create a tag with an invalid commit, i.e. a commit which does not exist in the provided Repository URL gives an error message `Commit does not exist`
 
 <p align = "center">
-    <img src="/assets/img/Retrieve_Combine.png" alt="tag" width="100%"/>
+    <img src="/assets/img/bad_commit.gif" alt="Commit does not exist" class="middle"/>
 </p>
 <p align="center">
-    Successful Tag Retrival
+    <i>Commit does not exist</i>
 </p>
-Tag information can be retrieved successfully by inputing repository url and the Tag id present in the repo, irrespective of the token. The retrival displays the repository url, tag id and the corresponding commit hash.
+
+### Retrieving a tag
+
+Once a tag is created in the blockchain, it can be retrieved by providing:
+
+1. The Repository URL for which we created the tag
+1. The tag name
 
 <p align = "center">
-    <img src="/assets/img/Error_Retrieve.png" alt="tag" width="100%"/>
+    <img src="/assets/img/get_tag.gif" alt="Retrieving a tag" class="lmiddle"/>
 </p>
 <p align="center">
-    Error scenarios during Tag Retrival
+    <i>Retrieving a tag</i>
 </p>
-Tag retrival will be unsuccessful, when we input the tag name that does not exist in the corresponding repository url. Hence it throws "Tag not exist" error.
+
+Tag retrieval will be unsuccessful if we pass a tag name that does not exist in the corresponding repository URL.
+
+<p align = "center">
+    <img src="/assets/img/get_tag_fail.gif" alt="Failed to retrieve tag" class="lmiddle"/>
+</p>
+<p align="center">
+    <i>Failed to retrieve tag</i>
+</p>
 
