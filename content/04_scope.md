@@ -11,13 +11,14 @@ While our solution is conceptually VCS-agnostic, for the purposes of this projec
 <p align = "center">
     <img src="/assets/img/architecture.png" alt="tag" width="100%"/>
 </p>
-
-TODO: application features
+<p align="center">
+    <i>Application Architecture</i>
+</p>
 
 Our application is made up of three fundamental components:
 
-1. Ganache Blockchain and Ethereum Smart Contracts
+1. Ethereum Smart Contracts written in Solidity
 1. A Node.js Middleware
-1. Front-end Web Application using ReactJS
+1. Front-end Web Application written using ReactJS
 
 In the following sections, we will go through each of these components in detail.
