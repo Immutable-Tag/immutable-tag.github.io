@@ -108,7 +108,17 @@ If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fcea
 </ol>
 <p>In the following sections, we will go through each of these components in detail.</p>
 <h2 id=smart-contracts>Smart Contracts</h2>
-<p>Explain code for smart contracts</p>
+<p>Ethereum smart contracts were utilized due to ease of use and plenty of available support provided. Using solidity, a programming language used to code smart contracts in Etheruem, we designed three functions to support our product functionality:</p>
+<ol>
+<li><b>Create Tag</b> function - A function that creates tags to be stored in the Ethereum Blockchain. The function accepts the repository url, tag name, and the commit hash associated with the tag as input.</li>
+<li><b>Get Tag</b> function - A function that retrives the information associated with a specific a repository url and tag name. The function utilizes the tag name and repository url provided by the user.</li>
+<li><b>Check Tag</b> function - A function that checks if a repository url and its associated tag name exsits on the blockchain or not. The function returns a true or false value depending on the exsistence of the tag in the blockchain.</li>
+</ol>
+<p>We utilized the truffle framework to develop our solution since it provides a development and testing environment, among other things. Ganache was also utilized as our personal blockchain for development and deployment of the smart contracts. To understand more about Truffle and Ganache, you can refer to the following links:</p>
+<p align=left>
+<b><i>Truffle:</b> <a href=https://trufflesuite.com/>https://trufflesuite.com/</a></i><br>
+<b><i>Ganache:</b> <a href=https://trufflesuite.com/ganache/>https://trufflesuite.com/ganache/</a></i>
+</p>
 <h2 id=nodejs-middleware>Node.js Middleware</h2>
 <h2 id=the-react-app>The React App</h2>
 <p>We have created a frontend using ReactJS to showcase how to:</p>
@@ -200,8 +210,40 @@ here
 <i>Demo video</i>
 </p>
 <h2 id=future-work>Future Work</h2>
+<p>With considerations to time constraints, our team decided to test our project idea of tag immutability using blockchains by employing Ethereum Blockchains, which a permissionless blockchain. Ideally, the use of of permissioned blockchains would provided more stability to the tag immutability. Hence, in the future we aim to develop this idea using a permissioned blockchain, more specifically, the ResilientDB blockchain. To know more about ResilientDB, you can refer to the following the Github repository or the website:</p>
+<p align=left>
+<i><b>Github: </b><a href=https://github.com/resilientdb>https://github.com/resilientdb</a></i><br>
+<i><b>Website: </b><a href=https://resilientdb.com/>https://resilientdb.com/</a></i>
+</p>
 <h2 id=about-the-team>About the team</h2>
-<p>Info about the team</p>
+<p>This product was conceived and developed as part of our coursework for the class ECS265: Distributed Database Systems by Dr. Mohammad Sadoghi at the University of California, Davis. Our team consists of following members:</p>
+<ol>
+<li>Vasudha Jha (
+<a href=mailto:vajha@ucdavis.edu>
+vajha@ucdavis.edu
+</a>
+)</li>
+<li>Parichay Chatterji (
+<a href=mailto:parichay@ucdavis.edu>
+parichay@ucdavis.edu
+</a>
+)</li>
+<li>Anusha Kulkarni (
+<a href=mailto:ahkulkarni@ucdavis.edu>
+ahkulkarni@ucdavis.edu
+</a>
+)</li>
+<li>Preethi Muruganandam (
+<a href=mailto:pmuruganandam@ucdavis.edu>
+pmuruganandam@ucdavis.edu
+</a>
+)</li>
+<li>Ashwitha Kassetty (
+<a href=mailto:avkassetty@ucdavis.edu>
+avkassetty@ucdavis.edu
+</a>
+)</li>
+</ol>
 </main>
 <script src=./assets/js/uwe-uwe.js type=text/javascript></script>
 <script type=text/javascript>UWE_UWE.FOOTNOTES.init(),UWE_UWE.TABS.init()</script></body>
