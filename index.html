@@ -41,7 +41,7 @@
 </nav>
 <main id=page-content>
 <h2 id=what-are-tags>What are tags?</h2>
-<p>Version control systems (VCS) provide the functionality to tag specific points in a repository’s history as milestones which can be used for a marked version release (i.e. v1.0.1). A tag can be considered as a branch which should not change after being created and mapped to a commit.</p>
+<p>Version Control Systems (VCS) provide the functionality to tag specific points in a repository’s history as milestones which can be used for a marked version release (i.e. v1.0.1). A tag can be considered as a branch which should not change after being created and mapped to a commit.</p>
 <p align=center>
 <img src=./assets/img/tags.png alt=tag width=75%>
 </p>
@@ -53,7 +53,7 @@
 <img src=https://imgs.xkcd.com/comics/dependency.png alt=tag width=75%>
 </p>
 <p align=center>
-<i>Original comic: <a href=https://xkcd.com/2347/>https://xkcd.com/2347/</a></i>
+<i>Original comic: <a href=https://xkcd.com/2347/ target=_blank>https://xkcd.com/2347/</a></i>
 </p>
 <p>The above comic accurately depicts our modern digital infrastructure where dependencies are stacked upon each other like these blocks, each block supporting the weight of all the blocks above it.</p>
 <p>Tags allow software developers to determine which versions of code they can reliably use as dependencies in their projects. Many automation systems rely on tags to build and install dependencies.</p>
@@ -72,20 +72,62 @@
 <i>Mutating a tag can cause issues</i>
 </p>
 <h2 id=our-solution>Our solution</h2>
-<p>Our solution uses the tamper-evident and tamper-resistant nature of blockchain to guarantee tag immutability and provide assurance to users that their products will continue functioning with the same level of reliability.</p>
+<p>Our solution uses the tamper-evident and tamper-resistant nature of
+<span class=link-wrapper>
+<a href=https://en.wikipedia.org/wiki/Blockchain target=_blank>
+blockchain
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+to guarantee tag immutability and provide assurance to users that their products will continue functioning with the same level of reliability.</p>
 <div aria-label="notification - info" class="notification info">
 <img alt="info icon" src=./assets/img/icons/info-icon.png height=48 width=48>
 <div>
 If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fceab</code>, then it should not be possible to delete or modify it by pointing it to a different commit <code>abcdef</code>. This way, users who were depending on the changes that were made until commit <code>0fceab</code> will not be pointed to the potentially buggy and incompatible commit <code>abcdef</code>.
 </div>
 </div>
-<p>Our solution leverages blockchain and smart contracts to:</p>
+<p>Our solution leverages blockchain and
+<span class=link-wrapper>
+<a href=https://en.wikipedia.org/wiki/Smart_contract target=_blank>
+smart contracts
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+to:</p>
 <ul>
 <li>Create tags immutably</li>
 <li>Retrieve created tags</li>
 </ul>
 <p>We have exposed RESTful APIs so that third-party applications can easily use our solution to provide tag immutability.</p>
-<p>Since most VCS support the concept of tags, they can make use of our tool-agnostic solution to support tag immutability in their products. Source-code repository hosting services such as GitHub, GitLab, Bitbucket, and SourceForge can also provide their users with tag immutability and since these host most of the world’s open-source projects, the benefit can be extended to millions of developers and end-users worldwide.</p>
+<p>Since most VCS support the concept of tags, they can make use of our tool-agnostic solution to support tag immutability in their products. Source-code repository hosting services such as
+<span class=link-wrapper>
+<a href=https://github.com/ target=_blank>
+GitHub
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+,
+<span class=link-wrapper>
+<a href=https://about.gitlab.com/ target=_blank>
+GitLab
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+,
+<span class=link-wrapper>
+<a href=https://bitbucket.org/product target=_blank>
+Bitbucket
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+, and
+<span class=link-wrapper>
+<a href=https://sourceforge.net/ target=_blank>
+SourceForge
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+can also provide their users with tag immutability and since these host most of the world’s open-source projects, the benefit can be extended to millions of developers and end-users worldwide.</p>
 <p align=center>
 <img src=./assets/img/solution.png alt=tag width=100%>
 </p>
@@ -134,7 +176,7 @@ Solidity
     ...
 }
 </code></pre></div><p>We then have a <code>mapping</code> (equivalent to a dictionary or hashtable in other programming languages) of <code>string</code> to <code>Tag</code> objects inside the smart contract:</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity>    <span style=color:#00f>mapping</span>(<span style=color:#00f>string</span> =&gt; Tag) <span style=color:#00f>private</span> tags;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity><span style=color:#00f>mapping</span>(<span style=color:#00f>string</span> =&gt; Tag) <span style=color:#00f>private</span> tags;
 </code></pre></div><p>By using a <code>mapping</code> instead of a array, we can look up tags in <code>O(1)</code> time. The key for this mapping is a concatenation of the repository URL and the tag.</p>
 <p>For example, if we want to create a tag <code>v1.0.0</code> in the repository <code>https://github.com/Immutable-Tag/SmartContacts</code>, then the key in the <code>mapping</code> will be <code>"https://github.com/Immutable-Tag/SmartContacts_v1.0.0"</code> and the value will be the following <code>Tag</code> object:</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity>{
@@ -192,7 +234,14 @@ this GitHub repository
 .</p>
 <h2 id=nodejs-middleware>Node.js Middleware</h2>
 <h2 id=the-react-app>The React App</h2>
-<p>We have created a frontend using ReactJS to showcase how to:</p>
+<p>We have created a frontend using
+<span class=link-wrapper>
+<a href=https://reactjs.org/ target=_blank>
+ReactJS
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+to showcase how to:</p>
 <ol>
 <li>Create a tag immutably</li>
 <li>Retrieve created tag</li>
@@ -255,12 +304,20 @@ this GitHub repository
 <p align=center>
 <i>Failed to retrieve tag</i>
 </p>
+<p>You can find the entire code and documentation for our React application in
+<span class=link-wrapper>
+<a href=https://github.com/Immutable-Tag/ReactApp target=_blank>
+this GitHub repository
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+.</p>
 <h2 id=demo>Demo</h2>
 <h3 id=running-the-application-locally>Running the application locally</h3>
-<p>Please refer to this
+<p>Please refer to
 <span class=link-wrapper>
 <a href=https://github.com/Immutable-Tag/docs target=_blank>
-link
+this link
 </a>
 <img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
 </span>
@@ -281,20 +338,134 @@ here
 <i>Demo video</i>
 </p>
 <h2 id=future-work>Future Work</h2>
-<p>With considerations to time constraints, our team decided to test our project idea of tag immutability using blockchains by employing Ethereum Blockchains, which a permissionless blockchain. Ideally, the use of of permissioned blockchains would provided more stability to the tag immutability. Hence, in the future we aim to develop this idea using a permissioned blockchain, more specifically, the ResilientDB blockchain. To know more about ResilientDB, you can refer to the following the Github repository or the website:</p>
-<p align=left>
-<i><b>Github: </b><a href=https://github.com/resilientdb>https://github.com/resilientdb</a></i><br>
-<i><b>Website: </b><a href=https://resilientdb.com/>https://resilientdb.com/</a></i>
-</p>
+<p>Our team decided to test the idea of tag immutability using Ethereum, which allowed us to quickly build a Proof-of-Concept using smart contracts written in Solidity.</p>
+<h3 id=compatibility-with-other-blockchains>Compatibility with other blockchains</h3>
+<p>Our next step is to allow our solution to easily plug in any blockchain that supports smart contracts. We would also like to use permissioned blockchains such as
+<span class=link-wrapper>
+<a href=https://resilientdb.com/ target=_blank>
+ResilientDB
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+in order to achieve a higher throughput.</p>
+<h3 id=compatibility-with-other-vcs>Compatibility with other VCS</h3>
+<p>Our current scope is limited to working with git tags for repositories hosted on
+<span class=link-wrapper>
+<a href=https://github.com target=_blank>
+GitHub
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+. In the future, we would like our APIs to be easily consumed by not only other git hosting providers such as
+<span class=link-wrapper>
+<a href=https://about.gitlab.com/ target=_blank>
+GitLab
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+and
+<span class=link-wrapper>
+<a href=https://bitbucket.org/product/ target=_blank>
+Bitbucket
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+, but also hosting providers for
+<span class=link-wrapper>
+<a href=https://subversion.apache.org/ target=_blank>
+Subversion
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+and
+<span class=link-wrapper>
+<a href=https://www.mercurial-scm.org/ target=_blank>
+Mercurial
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+VCS.</p>
+<h3 id=application-outside-vcs>Application outside VCS</h3>
+<p>The concept of tag immutability can be applied to not only VCS, but also other areas where tagging is used. A popular example is that of
+<span class=link-wrapper>
+<a href=https://www.docker.com/ target=_blank>
+Docker
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+tags, where tags point to specific image digests/hashes. As cloud computing continues to be more popular, this will be extremely helpful for
+<span class=link-wrapper>
+<a href=https://hub.docker.com/ target=_blank>
+Docker Hub
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+and cloud providers that have a container registry for storing Docker images. This includes
+<span class=link-wrapper>
+<a href=https://aws.amazon.com/ target=_blank>
+Amazon Web Services
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+,
+<span class=link-wrapper>
+<a href=https://cloud.google.com/ target=_blank>
+Google Cloud Platform
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+,
+<span class=link-wrapper>
+<a href=https://azure.microsoft.com/ target=_blank>
+Microsoft Azure
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+,
+<span class=link-wrapper>
+<a href=https://www.ibm.com/cloud target=_blank>
+IBM Cloud
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+and
+<span class=link-wrapper>
+<a href=https://www.oracle.com/cloud/ target=_blank>
+Oracle Cloud
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+.</p>
 <h2 id=about-the-team>About the team</h2>
-<p>This product was conceived and developed as part of our coursework for the class ECS265: Distributed Database Systems by Dr. Mohammad Sadoghi at the University of California, Davis. Our team consists of following members:</p>
+<p>This product was conceived and developed as part of our coursework for the Fall 2021 class
+<span class=link-wrapper>
+<a href=https://expolab.org/ecs265-fall2021.html target=_blank>
+ECS 265: Distributed Database Systems
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+taught by
+<span class=link-wrapper>
+<a href=https://cs.ucdavis.edu/directory/mohammad-sadoghi target=_blank>
+Prof. Mohammad Sadoghi
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+at the
+<span class=link-wrapper>
+<a href=https://www.ucdavis.edu/ target=_blank>
+University of California, Davis
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+. Our team consists of following members:</p>
 <ol>
 <li>Vasudha Jha (
 <a href=mailto:vajha@ucdavis.edu>
 vajha@ucdavis.edu
 </a>
 )</li>
-<li>Parichay Chatterji (
+<li>Parichaya Chatterji (
 <a href=mailto:parichay@ucdavis.edu>
 parichay@ucdavis.edu
 </a>
