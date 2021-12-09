@@ -24,7 +24,7 @@ This function checks if a given commit exists in the Github repository's default
 <br />
 This function is only executed to completion if the user has provided their Github [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). Upon successful authentication, it creates the tag for the user's repository and also maps that tag against the commit id as the reference to the tag.
 
-4. Function `getTag(req, res)`:
+4. `getTag(req, res)`:
 <br />
 This method is invoked when a user requests to get tag information form the blockchain. We use web3's Ethereum contract object to call the methods from our SmartContract backend to access the tag information from our blockchain, and if it exists, display the tag information, including the commit hash, to our end user.
 
