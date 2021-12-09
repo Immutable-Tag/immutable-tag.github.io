@@ -610,6 +610,11 @@ table td {
     width: 75%;
 }
 
+.lmiddle-wide {
+    padding-top: 20px;
+    width: 100%;
+}
+
 /* Use a media query to add a break point at 600px: */
 @media screen and (max-width: 600px) {
     .middle {
