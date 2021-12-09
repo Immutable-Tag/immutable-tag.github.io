@@ -623,6 +623,9 @@ table td {
     .lmiddle {
         width: 80%;
     }
+    .lmiddle-wide {
+        width: 80%;
+    }
 }
 
 /* Use a media query to add a break point at 400px: */
@@ -631,6 +634,9 @@ table td {
         width: 80%;
     }
     .lmiddle {
+        width: 80%;
+    }
+    .lmiddle-wide {
         width: 80%;
     }
 }
