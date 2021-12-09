@@ -24,7 +24,7 @@ contract ImmutableTag {
 We then have a `mapping` (equivalent to a dictionary or hashtable in other programming languages) of `string` to `Tag` objects inside the smart contract:
 
 ```solidity
-    mapping(string => Tag) private tags;
+mapping(string => Tag) private tags;
 ```
 
 By using a `mapping` instead of a array, we can look up tags in `O(1)` time. The key for this mapping is a concatenation of the repository URL and the tag.

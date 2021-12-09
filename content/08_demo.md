@@ -8,7 +8,7 @@ draft: false
 
 ### Running the application locally
 
-Please refer to this [link](https://github.com/Immutable-Tag/docs) for steps on how to run the application locally. In case you encounter any issues, please create a GitHub issue [here](https://github.com/Immutable-Tag/docs/issues).
+Please refer to [this link](https://github.com/Immutable-Tag/docs) for steps on how to run the application locally. In case you encounter any issues, please create a GitHub issue [here](https://github.com/Immutable-Tag/docs/issues).
 
 ### Using the application
 

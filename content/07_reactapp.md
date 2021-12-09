@@ -6,7 +6,8 @@ draft: false
 
 ## The React App
 
-We have created a frontend using ReactJS to showcase how to:
+We have created a frontend using [ReactJS](https://reactjs.org/) to showcase how to:
+
 1. Create a tag immutably
 1. Retrieve created tag
 
@@ -37,6 +38,7 @@ Optionally, the form also accepts a GitHub token which includes permissions for 
 A tag is not created in the following scenarios:
 
 1. **Tag already exists** - To guarantee immutability, a tag once created cannot be modified. Therefore, trying to map a pre-exisiting tag to a different commit gives an error message `Tag already exists`.
+
 <p align = "center">
     <img src="/assets/img/tag_already_exists.gif" alt="Tag already exists" class="middle"/>
 </p>
@@ -76,3 +78,4 @@ Tag retrieval will be unsuccessful if we pass a tag name that does not exist in 
     <i>Failed to retrieve tag</i>
 </p>
 
+You can find the entire code and documentation for our React application in [this GitHub repository](https://github.com/Immutable-Tag/ReactApp).
