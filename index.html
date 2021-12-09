@@ -275,7 +275,7 @@ personal access token
 . Upon successful authentication, it creates the tag for the user&rsquo;s repository and also maps that tag against the commit id as the reference to the tag.</p>
 </li>
 <li>
-<p>Function <code>getTag(req, res)</code>:
+<p><code>getTag(req, res)</code>:
 <br>
 This method is invoked when a user requests to get tag information form the blockchain. We use web3&rsquo;s Ethereum contract object to call the methods from our SmartContract backend to access the tag information from our blockchain, and if it exists, display the tag information, including the commit hash, to our end user.</p>
 </li>
