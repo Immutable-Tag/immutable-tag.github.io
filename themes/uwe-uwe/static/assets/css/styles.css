@@ -305,6 +305,8 @@ figure > figcaption {
 
 table {
     width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 
@@ -320,8 +322,12 @@ table th {
 
 table th,
 table td {
-    border-bottom: solid 1px;
+    border: solid 1px;
+    /* border-bottom: solid 1px; */
     text-align: left;
+    padding: 5px;
+    border-spacing: 10px;
+    border-collapse: separate;
 }
 
 #page-404 body {

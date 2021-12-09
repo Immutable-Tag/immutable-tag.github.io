@@ -73,4 +73,40 @@ function checkTag(string memory _repoURL, string memory _tagID) public view retu
 
 We are using the [Truffle Suite](https://trufflesuite.com/) for developing our solution as it provides a development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM). It also provides features like built-in Smart Contract compilation, linking, deployment and binary management and automated contract testing. We used [Ganache](https://trufflesuite.com/ganache/) to simulate an Ethereum blockchain and deployed our smart contract to it.
 
+After writing our smart contract, we deploy it to Ganache, our local blockchain, by running the command `truffle migrate`. This compiles our Solidity smart contract code to JavaScript and deploys it to Ganache. The output of this deployment looks like this:
+
+```text
+...
+2_tag_contracts.js
+==================
+
+   Replacing 'ImmutableTag'
+   ------------------------
+   > transaction hash:    0x0e1ef624894d2a75d2356deac0daf3a077195eff60d1e96452662ce0804c3c5e
+   > Blocks: 0            Seconds: 0
+   > contract address:    0x5A58B7cAf4609a1c9f7934A0bDBcbeF3B4d27bb8
+   > block number:        3
+   > block timestamp:     1637725439
+   > account:             0x851F4BE5447fbC3e40b50A650584551434D9579F
+   > balance:             9999.97973206
+   > gas used:            779116 (0xbe36c)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.01558232 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.01558232 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.01942118 ETH
+```
+
+We use the contract address of the `ImmutableTag` smart contract (`0x5A58B7cAf4609a1c9f7934A0bDBcbeF3B4d27bb8` in this case) to invoke it from the middleware. We provide more details about this in the next section.
+
 You can find the entire code and documentation for our smart contract in [this GitHub repository](https://github.com/Immutable-Tag/SmartContracts).

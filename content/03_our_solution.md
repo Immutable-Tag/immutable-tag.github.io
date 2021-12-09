@@ -9,7 +9,7 @@ draft: false
 Our solution uses the tamper-evident and tamper-resistant nature of [blockchain](https://en.wikipedia.org/wiki/Blockchain) to guarantee tag immutability and provide assurance to users that their products will continue functioning with the same level of reliability.
 
 {{< notification type="info" title="">}}
-If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fceab</code>, then it should not be possible to delete or modify it by pointing it to a different commit <code>abcdef</code>. This way, users who were depending on the changes that were made until commit <code>0fceab</code> will not be pointed to the potentially buggy and incompatible commit <code>abcdef</code>.
+If a repository has a tag <code>v1.0.0</code> which points to commit <code>b06cdb0</code>, then it should not be possible to delete or modify it by pointing it to a different commit <code>49a68cd</code>. This way, users who were depending on the changes that were made until commit <code>b06cdb0</code> will not be pointed to the potentially buggy and incompatible commit <code>49a68cd</code>.
 {{< /notification >}}
 
 Our solution leverages blockchain and [smart contracts](https://en.wikipedia.org/wiki/Smart_contract) to:

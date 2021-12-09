@@ -21,7 +21,12 @@ Currently our application optionally reads a GitHub access token from the UI and
 Our current scope is limited to working with git tags for repositories hosted on [GitHub](https://github.com). In the future, we would like our APIs to be easily consumed by not only other git hosting providers such as [GitLab](https://about.gitlab.com/) and [Bitbucket](https://bitbucket.org/product/), but also hosting providers for [Subversion](https://subversion.apache.org/) and [Mercurial](https://www.mercurial-scm.org/) VCS.
 
 ### Automation with existing CI/CD workflows
-While our project has a React-based UI which makes it easy for our end users to use our application, this could be extended to use Command Line Interface (CLI) scripts or binaries as well. This is easily implementable since our Middleware is built using REST APIs. The primary benefit of this would be easy integration into automated CI/CD workflows of development/engineering teams that meet their requirements.
+
+While our project has a web front-end which makes it easy for our users to use our application, we can also provide Command Line Interface (CLI) tools for interacting with our API. The primary benefit of this would be easy integration into automated CI/CD workflows of engineering teams.
+
+### API Authentication
+
+In the future we will add include authentication for our API using API Keys and also add rate limiting to prevent security attacks.
 
 ### Application outside VCS
 

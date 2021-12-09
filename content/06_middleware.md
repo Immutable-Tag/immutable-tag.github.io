@@ -1,34 +1,149 @@
 ---
 weight: 6
-title: "Node.js Middleware"
+title: "Middleware"
 draft: false
 ---
 
-## Node.js Middleware
+## Middleware
 
-In our middleware layer, we essentially have a REST API server built using Node.js which is used by our React-based UI layer, and [web3.js](https://web3js.readthedocs.io/en/v1.5.2/)  based integration with our Ethereum SmartContracts backend to facilitate Tag creation and Tag Lookup by the end user using our Blockchain solution.
+Our middleware layer is a RESTful API server built using Node.js. The APIs provided by the server are consumed by our React front-end.
 
-We also have functions which integrate with Github APIs to validate the accuracy of commits, as well as Tag creation within our Github repository using Github personal access tokens when available. 
+The server also calls GitHub APIs to verify the existence of a commit to which a tag will point, and optionally, to create tags in the GitHub repository using GitHub personal access tokens.
 
-Here are some of the important `functions` and `objects` located in the `controllers` folder within `itag.js` file from the [Middleware](https://github.com/Immutable-Tag/Middleware) repository:
+### Connecting Node.js server to the blockchain
 
-1. `createTag(req, res)`:
-<br />
-This function is the starting point of creating a new tag as requested by the user. It checks with the blockchain if the tag already exists and if not, proceeds to create one in the blockchain. It also calls other functions to check the validity of the commit as well as makes attempts to create the tag on Github, if possible.
+In the previous section, we described how we deploy our smart contract to Ganache and get a contract address once the deployment succeeds. We use this address to connect the middleware to the smart contract using [web3.js](https://web3js.readthedocs.io/) and invoke smart contract functions for tag creation and tag retrieval.
 
-2. `checkIfCommitExists(repoUrl, commitId)`:
-<br />
-This function checks if a given commit exists in the Github repository's default branch as provided by the user. This validation is an important decision point to ensure that the release version referred to by the tag points to a commit that actually exists in the codebase.
+### Creating a Tag
 
-3. `createTagOnGitHub(repoUrl, tagId, commitId, githubToken)`:
-<br />
-This function is only executed to completion if the user has provided their Github [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). Upon successful authentication, it creates the tag for the user's repository and also maps that tag against the commit id as the reference to the tag.
+This API creates a new tag on the blockchain. It first checks if the tag already exists in the blockchain by invoking the `checkTag` smart contract function. If the tag does not exist, it makes a request to GitHub to verify the existence of the commit that is being mapped to the tag. If the commit is valid, it proceeds to create the tag in the blockchain by invoking the `createTag` smart contract function. (Please see the previous section on Smart contracts to understand more.)
 
-4. `getTag(req, res)`:
-<br />
-This method is invoked when a user requests to get tag information form the blockchain. We use web3's Ethereum contract object to call the methods from our SmartContract backend to access the tag information from our blockchain, and if it exists, display the tag information, including the commit hash, to our end user.
+If a GitHub personal access token is passed to it, then the API also creates the tag in the GitHub repository.
 
-5. `web3.js` object:
-<br />
-[web3.js](https://github.com/ChainSafe/web3.js/blob/v1.5.2/docs/index.rst) is an Ethereum javascript API library that we use to communicate with our SmartContracts backend blockchain layer. We create a `web3` object by connecting to our [Ganache](https://github.com/trufflesuite/ganache-cli-archive) server. We then isolate and set our specific Ethereum account and finally create our web3 `contract` object, through which we can communicate with our Solidity SmartContract backend blockchain layer as needed in the functions described above.
+#### API endpoint
 
+```http
+POST /v1/tags
+```
+
+#### Parameters
+
+| Name         | Type   | In     | Description      |
+|--------------|--------|--------|------------------|
+| Content-Type | string | header | application/json |
+| repo_url     | string | body   | repository URL   |
+| tag_id       | string | body   | tag name         |
+| commit_id    | string | body   | commit hash      |
+
+#### Example
+
+```bash
+curl -i -X POST "http://localhost:5000/v1/tags" \
+    -H 'Content-Type: application/json' \
+    -d '{"repo_url": "https://github.com/Immutable-Tag/SmartContacts",\
+        "tag_id": "v1.0.0",\
+        "commit_id": "66190b9fc987cb12c3a302c84123122e68ef6450"}'
+```
+
+Response:
+
+```http
+HTTP/1.1 201 Created
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 39
+ETag: W/"27-p5b2vwAQyjd8Enu5ruBWmlgkkzw"
+Date: Wed, 24 Nov 2021 04:58:54 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"message":"Successfully created tag."}
+```
+
+If we try to map an existing tag to a different commit, the response looks like:
+
+```http
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/"1e-KM94dQmY+pgv0Ecd8L77N5qIs0c"
+Date: Wed, 24 Nov 2021 04:58:27 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Tag already exists"}
+```
+
+If the commit doesn't exist, the response looks like: 
+
+```http
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/"1e-KM94dQmY+pgv0Ecd8L77N5qIs0c"
+Date: Wed, 24 Nov 2021 04:58:27 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Commit does not exist"}
+```
+
+### Retrieving a Tag
+
+This API retrieves a tag and its related information from the blockchain. For this, we invoke the `getTag` smart contract function which returns the `Tag` object if it exists in the `mapping`. (Please see the previous section on Smart contracts to understand more.)
+
+#### API endpoint
+
+```http
+POST /v1/tags/{tag_id}
+```
+
+#### Parameters
+
+| Name         | Type   | In     | Description      |
+|--------------|--------|--------|------------------|
+| Content-Type | string | header | application/json |
+| tag_id       | string | path   | tag name         |
+| repo_url     | string | body   | repository URL   |
+
+#### Example
+
+```bash
+curl -i -X POST "http://localhost:5000/v1/tags/v1.0.0" \
+    -H 'Content-Type: application/json' \
+    -d '{"repo_url": "https://github.com/Immutable-Tag/SmartContacts"}'
+```
+
+Response:
+
+```http
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 134
+ETag: W/"86-aGtC1lmpzo6bWnvAnDjnyX41gHg"
+Date: Wed, 24 Nov 2021 04:57:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"repo_url":"https://github.com/Immutable-Tag/SmartContacts","tag_id":"v1.0.0","commit_id":"66190b9fc987cb12c3a302c84123122e68ef6450"}
+```
+
+If we try to get a non-existent tag, the response looks like:
+
+```http
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/"1e-Tox4M2y0N7WkRGDAFErMm9hsPbA"
+Date: Wed, 24 Nov 2021 04:57:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Tag does not exist"}
+```
+
+You can find the entire code and documentation for our middleware in [this GitHub repository](https://github.com/Immutable-Tag/Middleware).
