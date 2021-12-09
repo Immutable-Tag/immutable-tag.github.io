@@ -32,7 +32,7 @@
 <li><a href=#our-solution>Our solution</a></li>
 <li><a href=#scope-of-this-project>Scope of this project</a></li>
 <li><a href=#smart-contract>Smart Contract</a></li>
-<li><a href=#node.js-middleware>Node.js Middleware</a></li>
+<li><a href=#middleware>Middleware</a></li>
 <li><a href=#the-react-app>The React App</a></li>
 <li><a href=#application-workflow>Application Workflow</a></li>
 <li><a href=#demo>Demo</a></li>
@@ -84,7 +84,7 @@ to guarantee tag immutability and provide assurance to users that their products
 <div aria-label="notification - info" class="notification info">
 <img alt="info icon" src=./assets/img/icons/info-icon.png height=48 width=48>
 <div>
-If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fceab</code>, then it should not be possible to delete or modify it by pointing it to a different commit <code>abcdef</code>. This way, users who were depending on the changes that were made until commit <code>0fceab</code> will not be pointed to the potentially buggy and incompatible commit <code>abcdef</code>.
+If a repository has a tag <code>v1.0.0</code> which points to commit <code>b06cdb0</code>, then it should not be possible to delete or modify it by pointing it to a different commit <code>49a68cd</code>. This way, users who were depending on the changes that were made until commit <code>b06cdb0</code> will not be pointed to the potentially buggy and incompatible commit <code>49a68cd</code>.
 </div>
 </div>
 <p>Our solution leverages blockchain and
@@ -225,6 +225,37 @@ Ganache
 <img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
 </span>
 to simulate an Ethereum blockchain and deployed our smart contract to it.</p>
+<p>After writing our smart contract, we deploy it to Ganache, our local blockchain, by running the command <code>truffle migrate</code>. This compiles our Solidity smart contract code to JavaScript and deploys it to Ganache. The output of this deployment looks like this:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>...
+2_tag_contracts.js
+==================
+
+   Replacing &#39;ImmutableTag&#39;
+   ------------------------
+   &gt; transaction hash:    0x0e1ef624894d2a75d2356deac0daf3a077195eff60d1e96452662ce0804c3c5e
+   &gt; Blocks: 0            Seconds: 0
+   &gt; contract address:    0x5A58B7cAf4609a1c9f7934A0bDBcbeF3B4d27bb8
+   &gt; block number:        3
+   &gt; block timestamp:     1637725439
+   &gt; account:             0x851F4BE5447fbC3e40b50A650584551434D9579F
+   &gt; balance:             9999.97973206
+   &gt; gas used:            779116 (0xbe36c)
+   &gt; gas price:           20 gwei
+   &gt; value sent:          0 ETH
+   &gt; total cost:          0.01558232 ETH
+
+
+   &gt; Saving migration to chain.
+   &gt; Saving artifacts
+   -------------------------------------
+   &gt; Total cost:          0.01558232 ETH
+
+
+Summary
+=======
+&gt; Total deployments:   2
+&gt; Final cost:          0.01942118 ETH
+</code></pre></div><p>We use the contract address of the <code>ImmutableTag</code> smart contract (<code>0x5A58B7cAf4609a1c9f7934A0bDBcbeF3B4d27bb8</code> in this case) to invoke it from the middleware. We provide more details about this in the next section.</p>
 <p>You can find the entire code and documentation for our smart contract in
 <span class=link-wrapper>
 <a href=https://github.com/Immutable-Tag/SmartContracts target=_blank>
@@ -233,71 +264,168 @@ this GitHub repository
 <img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
 </span>
 .</p>
-<h2 id=nodejs-middleware>Node.js Middleware</h2>
-<p>In our middleware layer, we essentially have a REST API server built using Node.js which is used by our React-based UI layer, and
+<h2 id=middleware>Middleware</h2>
+<p>Our middleware layer is a RESTful API server built using Node.js. The APIs provided by the server are consumed by our React front-end.</p>
+<p>The server also calls GitHub APIs to verify the existence of a commit to which a tag will point, and optionally, to create tags in the GitHub repository using GitHub personal access tokens.</p>
+<h3 id=connecting-nodejs-server-to-the-blockchain>Connecting Node.js server to the blockchain</h3>
+<p>In the previous section, we described how we deploy our smart contract to Ganache and get a contract address once the deployment succeeds. We use this address to connect the middleware to the smart contract using
 <span class=link-wrapper>
-<a href=https://web3js.readthedocs.io/en/v1.5.2/ target=_blank>
+<a href=https://web3js.readthedocs.io/ target=_blank>
 web3.js
 </a>
 <img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
 </span>
-based integration with our Ethereum SmartContracts backend to facilitate Tag creation and Tag Lookup by the end user using our Blockchain solution.</p>
-<p>We also have functions which integrate with Github APIs to validate the accuracy of commits, as well as Tag creation within our Github repository using Github personal access tokens when available.</p>
-<p>Here are some of the important <code>functions</code> and <code>objects</code> located in the <code>controllers</code> folder within <code>itag.js</code> file from the
+and invoke smart contract functions for tag creation and tag retrieval.</p>
+<h3 id=creating-a-tag>Creating a Tag</h3>
+<p>This API creates a new tag on the blockchain. It first checks if the tag already exists in the blockchain by invoking the <code>checkTag</code> smart contract function. If the tag does not exist, it makes a request to GitHub to verify the existence of the commit that is being mapped to the tag. If the commit is valid, it proceeds to create the tag in the blockchain by invoking the <code>createTag</code> smart contract function. (Please see the previous section on Smart contracts to understand more.)</p>
+<p>If a GitHub personal access token is passed to it, then the API also creates the tag in the GitHub repository.</p>
+<h4 id=api-endpoint>API endpoint</h4>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http>POST /v1/tags
+</code></pre></div><h4 id=parameters>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>In</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>string</td>
+<td>header</td>
+<td>application/json</td>
+</tr>
+<tr>
+<td>repo_url</td>
+<td>string</td>
+<td>body</td>
+<td>repository URL</td>
+</tr>
+<tr>
+<td>tag_id</td>
+<td>string</td>
+<td>body</td>
+<td>tag name</td>
+</tr>
+<tr>
+<td>commit_id</td>
+<td>string</td>
+<td>body</td>
+<td>commit hash</td>
+</tr>
+</tbody>
+</table>
+<h4 id=example>Example</h4>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>curl -i -X POST <span style=color:#009c00>&#34;http://localhost:5000/v1/tags&#34;</span> <span style=color:#009c00>\
+</span><span style=color:#009c00></span>    -H <span style=color:#009c00>&#39;Content-Type: application/json&#39;</span> <span style=color:#009c00>\
+</span><span style=color:#009c00></span>    -d <span style=color:#009c00>&#39;{&#34;repo_url&#34;: &#34;https://github.com/Immutable-Tag/SmartContacts&#34;,\
+</span><span style=color:#009c00>        &#34;tag_id&#34;: &#34;v1.0.0&#34;,\
+</span><span style=color:#009c00>        &#34;commit_id&#34;: &#34;66190b9fc987cb12c3a302c84123122e68ef6450&#34;}&#39;</span>
+</code></pre></div><p>Response:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#00f>HTTP</span>/1.1 201 Created
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 39
+ETag: W/&#34;27-p5b2vwAQyjd8Enu5ruBWmlgkkzw&#34;
+Date: Wed, 24 Nov 2021 04:58:54 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{&#34;message&#34;:<span style=color:#009c00>&#34;Successfully created tag.&#34;</span>}
+</code></pre></div><p>If we try to map an existing tag to a different commit, the response looks like:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#00f>HTTP</span>/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/&#34;1e-KM94dQmY+pgv0Ecd8L77N5qIs0c&#34;
+Date: Wed, 24 Nov 2021 04:58:27 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{&#34;error&#34;:<span style=color:#009c00>&#34;Tag already exists&#34;</span>}
+</code></pre></div><p>If the commit doesn&rsquo;t exist, the response looks like:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#00f>HTTP</span>/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/&#34;1e-KM94dQmY+pgv0Ecd8L77N5qIs0c&#34;
+Date: Wed, 24 Nov 2021 04:58:27 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{&#34;error&#34;:<span style=color:#009c00>&#34;Commit does not exist&#34;</span>}
+</code></pre></div><h3 id=retrieving-a-tag>Retrieving a Tag</h3>
+<p>This API retrieves a tag and its related information from the blockchain. For this, we invoke the <code>getTag</code> smart contract function which returns the <code>Tag</code> object if it exists in the <code>mapping</code>. (Please see the previous section on Smart contracts to understand more.)</p>
+<h4 id=api-endpoint-1>API endpoint</h4>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http>POST /v1/tags/{tag_id}
+</code></pre></div><h4 id=parameters-1>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>In</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>string</td>
+<td>header</td>
+<td>application/json</td>
+</tr>
+<tr>
+<td>tag_id</td>
+<td>string</td>
+<td>path</td>
+<td>tag name</td>
+</tr>
+<tr>
+<td>repo_url</td>
+<td>string</td>
+<td>body</td>
+<td>repository URL</td>
+</tr>
+</tbody>
+</table>
+<h4 id=example-1>Example</h4>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>curl -i -X POST <span style=color:#009c00>&#34;http://localhost:5000/v1/tags/v1.0.0&#34;</span> <span style=color:#009c00>\
+</span><span style=color:#009c00></span>    -H <span style=color:#009c00>&#39;Content-Type: application/json&#39;</span> <span style=color:#009c00>\
+</span><span style=color:#009c00></span>    -d <span style=color:#009c00>&#39;{&#34;repo_url&#34;: &#34;https://github.com/Immutable-Tag/SmartContacts&#34;}&#39;</span>
+</code></pre></div><p>Response:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#00f>HTTP</span>/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 134
+ETag: W/&#34;86-aGtC1lmpzo6bWnvAnDjnyX41gHg&#34;
+Date: Wed, 24 Nov 2021 04:57:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{&#34;repo_url&#34;:<span style=color:#009c00>&#34;https://github.com/Immutable-Tag/SmartContacts&#34;</span>,&#34;tag_id&#34;:<span style=color:#009c00>&#34;v1.0.0&#34;</span>,&#34;commit_id&#34;:<span style=color:#009c00>&#34;66190b9fc987cb12c3a302c84123122e68ef6450&#34;</span>}
+</code></pre></div><p>If we try to get a non-existent tag, the response looks like:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#00f>HTTP</span>/1.1 404 Not Found
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/&#34;1e-Tox4M2y0N7WkRGDAFErMm9hsPbA&#34;
+Date: Wed, 24 Nov 2021 04:57:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{&#34;error&#34;:<span style=color:#009c00>&#34;Tag does not exist&#34;</span>}
+</code></pre></div><p>You can find the entire code and documentation for our middleware in
 <span class=link-wrapper>
 <a href=https://github.com/Immutable-Tag/Middleware target=_blank>
-Middleware
+this GitHub repository
 </a>
 <img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
 </span>
-repository:</p>
-<ol>
-<li>
-<p><code>createTag(req, res)</code>:
-<br>
-This function is the starting point of creating a new tag as requested by the user. It checks with the blockchain if the tag already exists and if not, proceeds to create one in the blockchain. It also calls other functions to check the validity of the commit as well as makes attempts to create the tag on Github, if possible.</p>
-</li>
-<li>
-<p><code>checkIfCommitExists(repoUrl, commitId)</code>:
-<br>
-This function checks if a given commit exists in the Github repository&rsquo;s default branch as provided by the user. This validation is an important decision point to ensure that the release version referred to by the tag points to a commit that actually exists in the codebase.</p>
-</li>
-<li>
-<p><code>createTagOnGitHub(repoUrl, tagId, commitId, githubToken)</code>:
-<br>
-This function is only executed to completion if the user has provided their Github
-<span class=link-wrapper>
-<a href=https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token target=_blank>
-personal access token
-</a>
-<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
-</span>
-. Upon successful authentication, it creates the tag for the user&rsquo;s repository and also maps that tag against the commit id as the reference to the tag.</p>
-</li>
-<li>
-<p><code>getTag(req, res)</code>:
-<br>
-This method is invoked when a user requests to get tag information form the blockchain. We use web3&rsquo;s Ethereum contract object to call the methods from our SmartContract backend to access the tag information from our blockchain, and if it exists, display the tag information, including the commit hash, to our end user.</p>
-</li>
-<li>
-<p><code>web3.js</code> object:
-<br>
-<span class=link-wrapper>
-<a href=https://github.com/ChainSafe/web3.js/blob/v1.5.2/docs/index.rst target=_blank>
-web3.js
-</a>
-<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
-</span>
-is an Ethereum javascript API library that we use to communicate with our SmartContracts backend blockchain layer. We create a <code>web3</code> object by connecting to our
-<span class=link-wrapper>
-<a href=https://github.com/trufflesuite/ganache-cli-archive target=_blank>
-Ganache
-</a>
-<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
-</span>
-server. We then isolate and set our specific Ethereum account and finally create our web3 <code>contract</code> object, through which we can communicate with our Solidity SmartContract backend blockchain layer as needed in the functions described above.</p>
-</li>
-</ol>
+.</p>
 <h2 id=the-react-app>The React App</h2>
 <p>We have created a frontend using
 <span class=link-wrapper>
@@ -468,7 +596,9 @@ Mercurial
 </span>
 VCS.</p>
 <h3 id=automation-with-existing-cicd-workflows>Automation with existing CI/CD workflows</h3>
-<p>While our project has a React-based UI which makes it easy for our end users to use our application, this could be extended to use Command Line Interface (CLI) scripts or binaries as well. This is easily implementable since our Middleware is built using REST APIs. The primary benefit of this would be easy integration into automated CI/CD workflows of development/engineering teams that meet their requirements.</p>
+<p>While our project has a web front-end which makes it easy for our users to use our application, we can also provide Command Line Interface (CLI) tools for interacting with our API. The primary benefit of this would be easy integration into automated CI/CD workflows of engineering teams.</p>
+<h3 id=api-authentication>API Authentication</h3>
+<p>In the future we will add include authentication for our API using API Keys and also add rate limiting to prevent security attacks.</p>
 <h3 id=application-outside-vcs>Application outside VCS</h3>
 <p>The concept of tag immutability can be applied to not only VCS, but also other areas where tagging is used. A popular example is that of
 <span class=link-wrapper>
