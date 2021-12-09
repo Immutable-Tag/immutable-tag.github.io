@@ -12,6 +12,10 @@ Our team decided to test the idea of tag immutability using Ethereum, which allo
 
 Our next step is to allow our solution to easily plug in any blockchain that supports smart contracts. We would also like to use permissioned blockchains such as [ResilientDB](https://resilientdb.com/) in order to achieve a higher throughput.
 
+### GitHub OAuth App
+
+Currently our application optionally reads a GitHub access token from the UI and creates tags in the GitHub repositories. We would like to instead create a [GitHub OAuth App](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) that users can give permissions for creating tags in the repositories they have access to.
+
 ### Compatibility with other VCS
 
 Our current scope is limited to working with git tags for repositories hosted on [GitHub](https://github.com). In the future, we would like our APIs to be easily consumed by not only other git hosting providers such as [GitLab](https://about.gitlab.com/) and [Bitbucket](https://bitbucket.org/product/), but also hosting providers for [Subversion](https://subversion.apache.org/) and [Mercurial](https://www.mercurial-scm.org/) VCS.
