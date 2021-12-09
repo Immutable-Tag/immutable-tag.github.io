@@ -20,6 +20,9 @@ Currently our application optionally reads a GitHub access token from the UI and
 
 Our current scope is limited to working with git tags for repositories hosted on [GitHub](https://github.com). In the future, we would like our APIs to be easily consumed by not only other git hosting providers such as [GitLab](https://about.gitlab.com/) and [Bitbucket](https://bitbucket.org/product/), but also hosting providers for [Subversion](https://subversion.apache.org/) and [Mercurial](https://www.mercurial-scm.org/) VCS.
 
+### Automation with existing CI/CD workflows
+While our project has a React-based UI which makes it easy for our end users to use our application, this could be extended to use Command Line Interface (CLI) scripts or binaries as well. This is easily implementable since our Middleware is built using REST APIs. The primary benefit of this would be easy integration into automated CI/CD workflows of development/engineering teams that meet their requirements.
+
 ### Application outside VCS
 
 The concept of tag immutability can be applied to not only VCS, but also other areas where tagging is used. A popular example is that of [Docker](https://www.docker.com/) tags, where tags point to specific image digests/hashes. As cloud computing continues to be more popular, this will be extremely helpful for [Docker Hub](https://hub.docker.com/) and cloud providers that have a container registry for storing Docker images. This includes [Amazon Web Services](https://aws.amazon.com/), [Google Cloud Platform](https://cloud.google.com/), [Microsoft Azure](https://azure.microsoft.com/), [IBM Cloud](https://www.ibm.com/cloud) and [Oracle Cloud](https://www.oracle.com/cloud/).
