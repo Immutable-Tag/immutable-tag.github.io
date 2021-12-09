@@ -29,7 +29,7 @@ Upon navigating to the create tag page, we can see a form that requires the foll
 Optionally, the form also accepts a GitHub token which includes permissions for creating tags in the GitHub repository as well as the blockchain.
 
 <p align = "center">
-    <img src="/assets/img/create_tag.gif" alt="create tag" class="middle"/>
+    <video src="/assets/video/create_tag.webm" alt="create tag" class="middle" autoplay loop/>
 </p>
 <p align="center">
     <i>Creating a Tag</i>
@@ -40,7 +40,7 @@ A tag is not created in the following scenarios:
 1. **Tag already exists** - To guarantee immutability, a tag once created cannot be modified. Therefore, trying to map a pre-exisiting tag to a different commit gives an error message `Tag already exists`.
 
 <p align = "center">
-    <img src="/assets/img/tag_already_exists.gif" alt="Tag already exists" class="middle"/>
+    <video src="/assets/video/tag_already_exists.webm" alt="Tag already exists" class="middle" autoplay loop type="video/webm"/>
 </p>
 <p align="center">
     <i>Tag already exists</i>
@@ -49,7 +49,7 @@ A tag is not created in the following scenarios:
 2. **Commit does not exist** - Trying to create a tag with an invalid commit, i.e. a commit which does not exist in the provided Repository URL gives an error message `Commit does not exist`
 
 <p align = "center">
-    <img src="/assets/img/bad_commit.gif" alt="Commit does not exist" class="middle"/>
+    <video src="/assets/video/bad_commit.webm" alt="Commit does not exist" class="middle" autoplay loop type="video/webm"/>
 </p>
 <p align="center">
     <i>Commit does not exist</i>
@@ -63,7 +63,7 @@ Once a tag is created in the blockchain, it can be retrieved by providing:
 1. The tag name
 
 <p align = "center">
-    <img src="/assets/img/get_tag.gif" alt="Retrieving a tag" class="lmiddle"/>
+    <video src="/assets/video/get_tag.webm" alt="Retrieving a tag" class="lmiddle" autoplay loop type="video/webm"/>
 </p>
 <p align="center">
     <i>Retrieving a tag</i>
@@ -72,7 +72,7 @@ Once a tag is created in the blockchain, it can be retrieved by providing:
 Tag retrieval will be unsuccessful if we pass a tag name that does not exist in the corresponding repository URL.
 
 <p align = "center">
-    <img src="/assets/img/get_tag_fail.gif" alt="Failed to retrieve tag" class="lmiddle"/>
+    <video src="/assets/video/get_tag_fail.webm" alt="Failed to retrieve tag" class="lmiddle" autoplay loop type="video/webm"/>
 </p>
 <p align="center">
     <i>Failed to retrieve tag</i>
