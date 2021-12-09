@@ -31,7 +31,7 @@
 <li><a href=#why-make-tags-immutable>Why make tags immutable</a></li>
 <li><a href=#our-solution>Our solution</a></li>
 <li><a href=#scope-of-this-project>Scope of this project</a></li>
-<li><a href=#smart-contracts>Smart Contracts</a></li>
+<li><a href=#smart-contract>Smart Contract</a></li>
 <li><a href=#node.js-middleware>Node.js Middleware</a></li>
 <li><a href=#the-react-app>The React App</a></li>
 <li><a href=#demo>Demo</a></li>
@@ -107,18 +107,89 @@ If a repository has a tag <code>v1.0.0</code> which points to commit <code>0fcea
 <li>Front-end Web Application written using ReactJS</li>
 </ol>
 <p>In the following sections, we will go through each of these components in detail.</p>
-<h2 id=smart-contracts>Smart Contracts</h2>
-<p>Ethereum smart contracts were utilized due to ease of use and plenty of available support provided. Using solidity, a programming language used to code smart contracts in Etheruem, we designed three functions to support our product functionality:</p>
+<h2 id=smart-contract>Smart Contract</h2>
+<p>We have used
+<span class=link-wrapper>
+<a href=https://ethereum.org/en/developers/docs/smart-contracts/ target=_blank>
+Ethereum smart contracts
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+because of their ease of use and widely available support. Using
+<span class=link-wrapper>
+<a href=https://docs.soliditylang.org/ target=_blank>
+Solidity
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+, a programming language used to code smart contracts in Etheruem, we have created a <code>struct</code> to store all details about tags:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity><span style=color:#00f>contract</span> <span style=color:#007575>ImmutableTag</span> {
+
+    <span style=color:#00f>struct</span> <span style=color:#007575>Tag</span> {
+        <span style=color:#00f>string</span> repoURL;
+        <span style=color:#00f>string</span> tagID;
+        <span style=color:#00f>string</span> commitHash;
+    }
+
+    ...
+}
+</code></pre></div><p>We then have a <code>mapping</code> (equivalent to a dictionary or hashtable in other programming languages) of <code>string</code> to <code>Tag</code> objects inside the smart contract:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity>    <span style=color:#00f>mapping</span>(<span style=color:#00f>string</span> =&gt; Tag) <span style=color:#00f>private</span> tags;
+</code></pre></div><p>By using a <code>mapping</code> instead of a array, we can look up tags in <code>O(1)</code> time. The key for this mapping is a concatenation of the repository URL and the tag.</p>
+<p>For example, if we want to create a tag <code>v1.0.0</code> in the repository <code>https://github.com/Immutable-Tag/SmartContacts</code>, then the key in the <code>mapping</code> will be <code>"https://github.com/Immutable-Tag/SmartContacts_v1.0.0"</code> and the value will be the following <code>Tag</code> object:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity>{
+    repoURL: <span style=color:#009c00>&#34;https://github.com/Immutable-Tag/SmartContacts&#34;</span>
+    tagID: <span style=color:#009c00>&#34;v1.0.0&#34;</span>
+    commitHash: <span style=color:#009c00>&#34;66190b9fc987cb12c3a302c84123122e68ef6450&#34;</span>
+}
+</code></pre></div><p>We have added three functions to support our product functionality:</p>
 <ol>
-<li><b>Create Tag</b> function - A function that creates tags to be stored in the Ethereum Blockchain. The function accepts the repository url, tag name, and the commit hash associated with the tag as input.</li>
-<li><b>Get Tag</b> function - A function that retrives the information associated with a specific a repository url and tag name. The function utilizes the tag name and repository url provided by the user.</li>
-<li><b>Check Tag</b> function - A function that checks if a repository url and its associated tag name exsits on the blockchain or not. The function returns a true or false value depending on the exsistence of the tag in the blockchain.</li>
+<li><strong>createTag</strong> - This function creates tags to be stored in the Ethereum Blockchain by adding it to the mapping <code>tags</code>. The function accepts the repository URL, tag, and the commit to be associated with the tag as parameters.</li>
 </ol>
-<p>We utilized the truffle framework to develop our solution since it provides a development and testing environment, among other things. Ganache was also utilized as our personal blockchain for development and deployment of the smart contracts. To understand more about Truffle and Ganache, you can refer to the following links:</p>
-<p align=left>
-<b><i>Truffle:</b> <a href=https://trufflesuite.com/>https://trufflesuite.com/</a></i><br>
-<b><i>Ganache:</b> <a href=https://trufflesuite.com/ganache/>https://trufflesuite.com/ganache/</a></i>
-</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity><span style=color:#00f>function</span> <span style=color:#c34e00>createTag</span>(<span style=color:#00f>string</span> <span style=color:#00f>memory</span> _repoURL, <span style=color:#00f>string</span> <span style=color:#00f>memory</span> _tagID, <span style=color:#00f>string</span> <span style=color:#00f>memory</span> _commitHash) <span style=color:#00f>public</span> {
+    <span style=color:#00f>string</span> <span style=color:#00f>memory</span> key;
+    key = <span style=color:#00f>string</span>(abi.encodePacked(<span style=color:#00f>string</span>(abi.encodePacked(_repoURL, <span style=color:#009c00>&#34;_&#34;</span>)), _tagID));
+    tags[key] = Tag(_repoURL, _tagID, _commitHash);
+}
+</code></pre></div><ol start=2>
+<li><strong>getTag</strong> - This function takes a repository URL and tag ID and looks up in the <code>mapping</code> to retrieve the tag&rsquo;s details.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity><span style=color:#00f>function</span> <span style=color:#c34e00>getTag</span>(<span style=color:#00f>string</span> <span style=color:#00f>memory</span> _repoURL, <span style=color:#00f>string</span> <span style=color:#00f>memory</span> _tagID) <span style=color:#00f>public</span> <span style=color:#00f>view</span> <span style=color:#00f>returns</span> (Tag <span style=color:#00f>memory</span>) {
+    <span style=color:#00f>string</span> <span style=color:#00f>memory</span> key;
+    key = <span style=color:#00f>string</span>(abi.encodePacked(<span style=color:#00f>string</span>(abi.encodePacked(_repoURL, <span style=color:#009c00>&#34;_&#34;</span>)), _tagID));
+    <span style=color:#00f>return</span> tags[key];
+}
+</code></pre></div><ol start=3>
+<li><strong>checkTag</strong> - This function checks if a tag already exsits on the blockchain or not. If the tag exists in the <code>mapping</code> then this function returns <code>true</code>, otherwise it returns <code>false</code>.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-solidity data-lang=solidity><span style=color:#00f>function</span> <span style=color:#c34e00>checkTag</span>(<span style=color:#00f>string</span> <span style=color:#00f>memory</span> _repoURL, <span style=color:#00f>string</span> <span style=color:#00f>memory</span> _tagID) <span style=color:#00f>public</span> <span style=color:#00f>view</span> <span style=color:#00f>returns</span> (<span style=color:#00f>bool</span>) {
+    <span style=color:#00f>string</span> <span style=color:#00f>memory</span> key;
+    key = <span style=color:#00f>string</span>(abi.encodePacked(<span style=color:#00f>string</span>(abi.encodePacked(_repoURL, <span style=color:#009c00>&#34;_&#34;</span>)), _tagID));
+    <span style=color:#00f>return</span> <span style=color:#00f>bytes</span>(tags[key].commitHash).length != 0;
+}
+</code></pre></div><p>We are using the
+<span class=link-wrapper>
+<a href=https://trufflesuite.com/ target=_blank>
+Truffle Suite
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+for developing our solution as it provides a development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM). It also provides features like built-in Smart Contract compilation, linking, deployment and binary management and automated contract testing. We used
+<span class=link-wrapper>
+<a href=https://trufflesuite.com/ganache/ target=_blank>
+Ganache
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+to simulate an Ethereum blockchain and deployed our smart contract to it.</p>
+<p>You can find the entire code and documentation for our smart contract in
+<span class=link-wrapper>
+<a href=https://github.com/Immutable-Tag/SmartContracts target=_blank>
+this GitHub repository
+</a>
+<img src=./assets/img/icons/external-link-icon.svg height=12 width=12>
+</span>
+.</p>
 <h2 id=nodejs-middleware>Node.js Middleware</h2>
 <h2 id=the-react-app>The React App</h2>
 <p>We have created a frontend using ReactJS to showcase how to:</p>
