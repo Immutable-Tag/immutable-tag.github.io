@@ -1,18 +1,76 @@
 ---
 weight: 5
-title: "Smart Contracts"
+title: "Smart Contract"
 draft: false
 ---
 
-## Smart Contracts
+## Smart Contract
 
-Ethereum smart contracts were utilized due to ease of use and plenty of available support provided. Using solidity, a programming language used to code smart contracts in Etheruem, we designed three functions to support our product functionality:
-1. <b>Create Tag</b> function - A function that creates tags to be stored in the Ethereum Blockchain. The function accepts the repository url, tag name, and the commit hash associated with the tag as input.
-2. <b>Get Tag</b> function - A function that retrives the information associated with a specific a repository url and tag name. The function utilizes the tag name and repository url provided by the user.
-3. <b>Check Tag</b> function - A function that checks if a repository url and its associated tag name exsits on the blockchain or not. The function returns a true or false value depending on the exsistence of the tag in the blockchain. 
+We have used [Ethereum smart contracts](https://ethereum.org/en/developers/docs/smart-contracts/) because of their ease of use and widely available support. Using [Solidity](https://docs.soliditylang.org/), a programming language used to code smart contracts in Etheruem, we have created a `struct` to store all details about tags:
 
-We utilized the truffle framework to develop our solution since it provides a development and testing environment, among other things. Ganache was also utilized as our personal blockchain for development and deployment of the smart contracts. To understand more about Truffle and Ganache, you can refer to the following links:
-<p align = "left">
-    <b><i>Truffle:</b> <a href="https://trufflesuite.com/">https://trufflesuite.com/</a></i><br>
-    <b><i>Ganache:</b> <a href="https://trufflesuite.com/ganache/">https://trufflesuite.com/ganache/</a></i>
-</p>
+```solidity
+contract ImmutableTag {
+
+    struct Tag {
+        string repoURL;
+        string tagID;
+        string commitHash;
+    }
+
+    ...
+}
+```
+
+We then have a `mapping` (equivalent to a dictionary or hashtable in other programming languages) of `string` to `Tag` objects inside the smart contract:
+
+```solidity
+    mapping(string => Tag) private tags;
+```
+
+By using a `mapping` instead of a array, we can look up tags in `O(1)` time. The key for this mapping is a concatenation of the repository URL and the tag.
+
+For example, if we want to create a tag `v1.0.0` in the repository `https://github.com/Immutable-Tag/SmartContacts`, then the key in the `mapping` will be `"https://github.com/Immutable-Tag/SmartContacts_v1.0.0"` and the value will be the following `Tag` object:
+
+```solidity
+{
+    repoURL: "https://github.com/Immutable-Tag/SmartContacts"
+    tagID: "v1.0.0"
+    commitHash: "66190b9fc987cb12c3a302c84123122e68ef6450"
+}
+```
+
+We have added three functions to support our product functionality:
+
+1. **createTag** - This function creates tags to be stored in the Ethereum Blockchain by adding it to the mapping `tags`. The function accepts the repository URL, tag, and the commit to be associated with the tag as parameters.
+
+```solidity
+function createTag(string memory _repoURL, string memory _tagID, string memory _commitHash) public {
+    string memory key;
+    key = string(abi.encodePacked(string(abi.encodePacked(_repoURL, "_")), _tagID));
+    tags[key] = Tag(_repoURL, _tagID, _commitHash);
+}
+```
+
+2. **getTag** - This function takes a repository URL and tag ID and looks up in the `mapping` to retrieve the tag's details.
+
+```solidity
+function getTag(string memory _repoURL, string memory _tagID) public view returns (Tag memory) {
+    string memory key;
+    key = string(abi.encodePacked(string(abi.encodePacked(_repoURL, "_")), _tagID));
+    return tags[key];
+}
+```
+
+3. **checkTag** - This function checks if a tag already exsits on the blockchain or not. If the tag exists in the `mapping` then this function returns `true`, otherwise it returns `false`.
+
+```solidity
+function checkTag(string memory _repoURL, string memory _tagID) public view returns (bool) {
+    string memory key;
+    key = string(abi.encodePacked(string(abi.encodePacked(_repoURL, "_")), _tagID));
+    return bytes(tags[key].commitHash).length != 0;
+}
+```
+
+We are using the [Truffle Suite](https://trufflesuite.com/) for developing our solution as it provides a development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM). It also provides features like built-in Smart Contract compilation, linking, deployment and binary management and automated contract testing. We used [Ganache](https://trufflesuite.com/ganache/) to simulate an Ethereum blockchain and deployed our smart contract to it.
+
+You can find the entire code and documentation for our smart contract in [this GitHub repository](https://github.com/Immutable-Tag/SmartContracts).
